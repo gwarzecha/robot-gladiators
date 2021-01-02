@@ -1,10 +1,6 @@
 
 
-// Game States
-// "WIN" - Player robot has defeated all enemy-robots
-//  * Fight all enemy-robots
-//  * Defeat each enemy-robot
-// "LOSE" - Player robot's health is zero or less
+/* Game functions */
 
 var fightOrSkip = function() {
   //ask player if they'd like to fight or run
@@ -31,7 +27,7 @@ var fightOrSkip = function() {
     }
   }
   return false;
-}
+};
 
 
 var fight = function(enemy) {
@@ -224,6 +220,8 @@ var getPlayerName = function() {
   }
 };
 
+
+/* Game information/variables */
 var playerInfo = {
   name: getPlayerName(), 
   health: 100, 
