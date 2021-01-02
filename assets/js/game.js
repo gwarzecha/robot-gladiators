@@ -6,27 +6,42 @@
 //  * Defeat each enemy-robot
 // "LOSE" - Player robot's health is zero or less
 
+var fightOrSkip = function() {
+  //ask player if they'd like to fight or run
+  var promptFight = window.prompt("would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+  promptFight = promptFight.toLowerCase();
+
+  // conditional recursive function call
+  if (!promptFight) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  // if player choses to skip
+  if (promptFight === "skip" || promptFight === "SKIP") {
+    // confirm player wants to skip
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?"); 
+
+    //if yes (true), leave fight
+    if (confirmSkip) {
+      window.alert(playerInfo.name + " has decided to skip this fight. Goodbye"); 
+      //subtract money from playerInfo.money for skipping
+      playerInfo.money = Math.max(0, playerInfo.money - 10);
+      return true;
+    }
+  }
+  return false;
+}
+
+
 var fight = function(enemy) {
-  
+  // repeat and execute as long as the enemy-robot is alive
   while(enemy.health > 0 && playerInfo.health > 0) {
-    //ask player if they'd like to fight or run
-    var promptFight = window.prompt("would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-
-    // if player choses to skip
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      // confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?"); 
-
-      //if yes (true), leave fight
-      if (confirmSkip) {
-          window.alert(playerInfo.name + " has decided to skip this fight. Goodbye"); 
-          //subtract money from playerInfo.money for skipping
-          playerInfo.money = playerInfo.money - 10;
-          console.log("playerInfo.money", playerInfo.money);
-          break;
-        }
+      if (fightOrSkip()) {
+        // if true, leave fight by breaking loop
+        break;
       }
-
+      
       // generate random damage value based on player's attack power
       var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
@@ -78,7 +93,7 @@ var startGame = function() {
     if (playerInfo.health > 0) {
       // let the player know what round they are in, arrays start at 0, so we need to add a 1 for the round
       window.alert("Welcome to Robot Gladiators! Round " + ( i + 1 ));
-      debugger; 
+      
 
       // pick new enemy to fight based on the index of the enemy.names array
       var pickedEnemyObj = enemyInfo[i];
@@ -170,8 +185,10 @@ var getPlayerName = function() {
   var name = "";
   while (name === "" || name === null) {
     name = prompt("What is your robot's name?");
+    console.log("Your robot's name is" + name);
+    return name;
   }
-}
+};
 
 var playerInfo = {
   name: getPlayerName(), 
